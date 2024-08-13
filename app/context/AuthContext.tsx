@@ -1,5 +1,11 @@
 "use client";
-import React, { createContext, useContext, useState, ReactNode } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from "react";
 import { login } from "../apiCilent/apiClient";
 
 interface AuthContextType {
@@ -7,6 +13,7 @@ interface AuthContextType {
   toggleAuth: () => void;
   isAuthenticated: boolean;
   isLoading: boolean;
+  logoutUser: () => void;
   loginUser: (email: string, password: string) => Promise<void>;
   signupUser: (
     email: string,
@@ -27,40 +34,61 @@ export const useAuth = () => {
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isLogin, setIsLogin] = useState(true);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isLoading, setIsloading] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  // Check localStorage for existing auth state on mount
+  useEffect(() => {
+    const storedAuthState = localStorage.getItem("isAuthenticated");
+    if (storedAuthState) {
+      setIsAuthenticated(JSON.parse(storedAuthState));
+    }
+  }, []);
 
   const loginUser = async (email: string, password: string) => {
     try {
-      setIsloading(true);
+      setIsLoading(true);
       //   await login(email, password);
 
-      await new Promise((resolve) => setTimeout(resolve, 3000)); // 2-second delay
+      await new Promise((resolve) => setTimeout(resolve, 3000)); // 3-second delay
       setIsAuthenticated(true);
-      setIsloading(false);
+      localStorage.setItem("isAuthenticated", JSON.stringify(true)); // Save auth state
+      setIsLoading(false);
     } catch (error) {
       console.error("Login failed", error);
-      setIsloading(false);
+      setIsLoading(false);
     }
   };
+
   const signupUser = async (
     email: string,
     password: string,
     companyID: string
   ) => {
     try {
-      setIsloading(true);
-    //   await signupUser(email, password, companyID);
+      setIsLoading(true);
+      //   await signupUser(email, password, companyID);
 
-      await new Promise((resolve) => setTimeout(resolve, 3000)); // 2-second delay
-      setIsloading(false);
+      await new Promise((resolve) => setTimeout(resolve, 3000)); // 3-second delay
+      setIsLoading(false);
     } catch (error) {
-      console.error("Login failed", error);
-      setIsloading(false);
+      console.error("Signup failed", error);
+      setIsLoading(false);
     }
   };
+
   const toggleAuth = () => {
     setIsLogin((prevIsLogin) => !prevIsLogin);
+  };
+
+  const logoutUser = () => {
+    // Clear the state
+    setIsAuthenticated(false);
+    // setUser(null);
+
+    // Remove from localStorage
+    localStorage.removeItem("isAuthenticated");
+    localStorage.removeItem("user");
   };
 
   return (
@@ -72,6 +100,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         loginUser,
         isLoading,
         signupUser,
+        logoutUser,
       }}
     >
       {children}

@@ -23,7 +23,6 @@ const LoginForm = (props: Props) => {
 
   useEffect(() => {
     if (isAuthenticated) {
-        
       router.replace(redirect);
     }
   }, [isAuthenticated]);
