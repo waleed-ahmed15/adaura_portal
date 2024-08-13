@@ -8,6 +8,13 @@ const config: Config = {
   ],
   theme: {
     fontSize: {
+      "poppins-22.4-normal": [
+        "13px",
+        {
+          letterSpacing: "normal",
+          fontWeight: "400",
+        },
+      ],
       "d-large": [
         "57px",
         {
@@ -137,6 +144,9 @@ const config: Config = {
       },
       fontFamily: {
         poppins: ["Poppins", "sans-serif"],
+      },
+      colors: {
+        primary: "#64748B",
       },
     },
   },
