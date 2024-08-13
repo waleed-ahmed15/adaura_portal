@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   EyeIcon,
   EyeOffIcon,
@@ -9,7 +9,7 @@ import {
 import Image from "next/image";
 import { useAuth } from "../context/AuthContext";
 type Props = {};
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const LoginForm = (props: Props) => {
   const [email, setEmail] = useState("");
@@ -18,12 +18,21 @@ const LoginForm = (props: Props) => {
   const [rememberMe, setRememberMe] = useState(false);
   const { toggleAuth, loginUser, isAuthenticated, isLoading } = useAuth();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirect = searchParams.get("redirect") || "/";
 
+  useEffect(() => {
+    if (isAuthenticated) {
+        
+      router.replace(redirect);
+    }
+  }, [isAuthenticated]);
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     await loginUser(email, password);
     if (isAuthenticated) {
-      router.push("/");
+      console.log("herer");
+      router.push(redirect);
     }
 
     // Handle login logic here

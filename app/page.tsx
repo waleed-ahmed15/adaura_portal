@@ -1,10 +1,11 @@
 import Image from "next/image";
 import LoginPage from "./login/page";
+import ProtectedRoute from "./components/ProtectedRoutes";
 
 export default function Home() {
   return (
-    // <LoginPage />
-
-    <div>home</div>
+    <ProtectedRoute>
+      <div>home</div>
+    </ProtectedRoute>
   );
 }
