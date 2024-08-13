@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { Poppins } from "next/font/google";
 import { AuthProvider } from "./context/AuthContext";
+import Navbar from "./components/Navbar";
 const inter = Inter({ subsets: ["latin"] });
 
 const poppins_init = Poppins({
@@ -23,7 +24,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={poppins_init.className}>
-        <AuthProvider>{children}</AuthProvider>
+        <AuthProvider>
+          <Navbar />
+          {children}
+        </AuthProvider>
       </body>
     </html>
   );
