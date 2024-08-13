@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import Breadcrumb from "./components/BreadCrumbs";
 import ProtectedRoute from "./components/ProtectedRoutes";
 import { useAuth } from "./context/AuthContext";
@@ -112,18 +113,20 @@ export default function Home() {
                     </div>
                   </td>
                   <td className="px-6 py-3 text-center   cursor-pointer">
-                    <span className="flex items-center gap-2 justify-center underline">
-                      <img
-                        src={`${
-                          index % 2 === 0
-                            ? "/history_icon.svg"
-                            : "/history_icon_black.svg"
-                        } `}
-                        alt="History"
-                        className="w-4 h-4"
-                      />
-                      History
-                    </span>
+                    <Link href={`/ads/${device.id}`}>
+                      <span className="flex items-center gap-2 justify-center underline">
+                        <img
+                          src={`${
+                            index % 2 === 0
+                              ? "/history_icon.svg"
+                              : "/history_icon_black.svg"
+                          } `}
+                          alt="History"
+                          className="w-4 h-4"
+                        />
+                        History
+                      </span>
+                    </Link>
                   </td>
                 </tr>
               ))}
