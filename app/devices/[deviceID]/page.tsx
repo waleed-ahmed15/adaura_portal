@@ -15,7 +15,7 @@ const DeviceAdsManagementPage = (props: Props) => {
     { label: "Home", href: "/" },
     { label: "Devices", href: "/" },
 
-    { label: "Ads Management", href: "#" },
+    { label: deviceID, href: "#" },
     { label: "History", href: "#" },
   ];
   const adsHistory = [
@@ -60,7 +60,7 @@ const DeviceAdsManagementPage = (props: Props) => {
       deviceStatus: "Online",
       deviceStatusColor: "#1BD27E", // Green
       organization:
-        "Organization 1 asd sa dsad sa  as dsa dsa sa dsa  ad as dsa sa dsa sa dsd",
+        "Organization 1 asd sa dsad sa  as dsa dsa sa dsa  device as dsa sa dsa sa dsd",
     },
     {
       no: "02",
@@ -87,60 +87,40 @@ const DeviceAdsManagementPage = (props: Props) => {
         <UploadAdDialog isOpen={isDialogOpen} onClose={closeDialog} />
         <div className="flex flex-row justify-between items-start">
           <p className="text-[#1A1A1A] my-3 text-h-large font-bold">
-            History
+            Device History
           </p>
-          <button
-            className="text-center bg-primary px-10 py-3 flex items-center rounded-xl text-white"
-            onClick={() => {
-              console.log("deploy AD clicked");
-              setIsDialogOpen(true);
-            }}
-          >
-            <span className="mr-2 text-h-small">+</span> <span>DEPLOY AD</span>
-          </button>
         </div>
         <div className="overflow-x-auto mt-6 border-2 rounded-xl">
           <table className="min-w-full border-collapse">
             <thead className="">
               <tr className="bg-white text-b-large font-bold ">
                 <th className="px-6 py-6">No.</th>
-                <th className="px-6 py-3">Preview</th>
                 <th className="px-6 py-3">ID</th>
                 <th className="px-6 py-3">Created</th>
                 <th className="px-6 py-3">Last Updated</th>
-                <th className="px-6 py-3">Duration</th>
+                <th className="px-6 py-3">Session Duration</th>
                 <th className="px-6 py-3">CurrentStatus</th>
               </tr>
             </thead>
             <tbody>
-              {adsHistory.map((ad, index) => (
+              {adsHistory.map((device, index) => (
                 <tr
                   key={index}
                   className={` text-b-medium font-bold ${
                     index % 2 === 0 ? "bg-primary text-white " : "bg-white"
                   } border-t`}
                 >
-                  <td className=" text-center ">{ad.no}</td>
+                  <td className=" text-center ">{device.no}</td>
 
-                  <td className="items-center  flex justify-center py-3">
-                    <Image
-                      src={ad.preview}
-                      width={1000}
-                      height={1000}
-                      alt=""
-                      className="w-32 h-20 rounded-small"
-                    />
-                    {/* <div className=" w-32 h-20 bg-red-600"></div> */}
-                  </td>
-                  <td className="px-6 py-3 text-center ">{ad.id}</td>
-                  <td className="px-6 py-3 text-center ">{ad.created}</td>
-                  <td className="px-6 py-3 text-center ">{ad.lastUpdated}</td>
-                  <td className="px-6 py-3 text-center ">{ad.duration}</td>
+                  <td className="px-6 py-3 text-center ">{device.id}</td>
+                  <td className="px-6 py-3 text-center ">{device.created}</td>
+                  <td className="px-6 py-3 text-center ">{device.lastUpdated}</td>
+                  <td className="px-6 py-3 text-center ">{device.duration}</td>
 
                   {/* </td>
                   <td
                     className="px-6 py-3 text-center justify-center flex items-center gap-2"
-                    title={ad.runningAds} // Tooltip showing the full text
+                    title={device.runningAds} // Tooltip showing the full text
                   >
                     <span
                       className="w-2 h-2 rounded-full"
@@ -176,7 +156,7 @@ const DeviceAdsManagementPage = (props: Props) => {
                   </td> */}
                   <td className="px-6 py-3 text-center   cursor-pointer">
                     <span className="flex items-center gap-2 justify-center underline">
-                      {ad.currentStatus}
+                      {device.currentStatus}
                     </span>
                   </td>
                 </tr>

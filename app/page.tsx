@@ -112,7 +112,7 @@ export default function Home() {
                     </div>
                   </td>
                   <td className="px-6 py-3 text-center   cursor-pointer">
-                    <Link href={`/ads/${device.id}`}>
+                    <Link href={`/devices/${device.id}`}>
                       <span className="flex items-center gap-2 justify-center underline">
                         <img
                           src={`${
@@ -123,7 +123,7 @@ export default function Home() {
                           alt="History"
                           className="w-4 h-4"
                         />
-                        Ads History
+                        History
                       </span>
                     </Link>
                   </td>

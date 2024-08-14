@@ -51,7 +51,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   ): Promise<boolean> => {
     try {
       setIsLoading(true);
-      await new Promise((resolve) => setTimeout(resolve, 3000)); // 3-second delay
+      await new Promise((resolve) => setTimeout(resolve, 1500)); // 3-second delay
 
       if (email === "adaura@gmail.com" && password === "adaura") {
         setIsAuthenticated(true);
