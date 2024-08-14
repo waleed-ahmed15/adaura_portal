@@ -11,7 +11,10 @@ const Navbar = (props: Props) => {
   // Hide navbar on /login and any route that starts with /login
   console.log("Current pathname:", pathname);
 
-  if (pathname.startsWith("/login")) {
+  if (
+    pathname.startsWith("/login") ||
+    pathname === "/display-device-client-registration"
+  ) {
     return null;
   }
 

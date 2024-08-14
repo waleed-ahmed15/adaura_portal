@@ -4,6 +4,8 @@ import "./globals.css";
 import { Poppins } from "next/font/google";
 import { AuthProvider } from "./context/AuthContext";
 import Navbar from "./components/Navbar";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const inter = Inter({ subsets: ["latin"] });
 
 const poppins_init = Poppins({
@@ -24,8 +26,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={poppins_init.className}>
+
         <AuthProvider>
           <Navbar />
+          <ToastContainer />
           {children}
         </AuthProvider>
       </body>

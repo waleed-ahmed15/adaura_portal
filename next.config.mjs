@@ -10,6 +10,14 @@ const nextConfig = {
         },
       ],
     },
+    async rewrites() {
+      return [
+        {
+          source: '/api/:path*',
+          destination: 'http://35.243.150.92/:path*', // Proxy to Backend
+        },
+      ];
+    },
   };
   
   export default nextConfig;
