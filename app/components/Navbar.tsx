@@ -2,11 +2,14 @@
 import Image from "next/image";
 import React from "react";
 import { usePathname } from "next/navigation";
-
+import { LogoutIcon } from "@heroicons/react/solid";
+import { useAuth } from "../context/AuthContext";
+import { Tooltip } from "@nextui-org/tooltip";
 type Props = {};
 
 const Navbar = (props: Props) => {
   const pathname = usePathname();
+  const { logoutUser } = useAuth();
 
   // Hide navbar on /login and any route that starts with /login
   console.log("Current pathname:", pathname);
@@ -21,7 +24,7 @@ const Navbar = (props: Props) => {
   return (
     <nav className="flex items-center justify-between bg-primary h-20 px-16">
       <Image src="/adaura_logo.svg" alt="Adaura Logo" width={200} height={55} />
-      <div className="flex items-center max-md:hidden overflow-hidden">
+      <div className="flex items-center max-md:hidden overflow-hidden text-white">
         <div className="flex flex-row gap-3 items-center">
           <Image src="/small_img_icon.svg" alt="" width={20} height={20} />
           <p>Companies</p>
@@ -45,6 +48,10 @@ const Navbar = (props: Props) => {
           alt="Adaura Logo"
           width={40}
           height={40}
+        />
+        <LogoutIcon
+          className="h-10 w-10 text-white cursor-pointer"
+          onClick={() => logoutUser()}
         />
       </div>
     </nav>
