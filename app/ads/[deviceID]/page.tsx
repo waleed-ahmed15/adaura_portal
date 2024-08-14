@@ -22,7 +22,7 @@ const DeviceAdsManagementPage = (props: Props) => {
     {
       no: "01",
       id: "20109",
-      preview: "https://via.placeholder.com/150", // Placeholder image
+      preview: "https://www.simplilearn.com/ice9/free_resources_article_thumb/Coca_Cola_Marketing_Strategy_2022.jpg", // Placeholder image
       created: "2024-08-01",
       lastUpdated: "2024-08-07",
       duration: "7 days",
@@ -32,7 +32,7 @@ const DeviceAdsManagementPage = (props: Props) => {
     {
       no: "02",
       id: "20110",
-      preview: "https://via.placeholder.com/150", // Placeholder image
+      preview: "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/f4faf829500323.55f69c7711cc3.jpg", // Placeholder image
       created: "2024-08-03",
       lastUpdated: "2024-08-08",
       duration: "5 days",
@@ -42,7 +42,7 @@ const DeviceAdsManagementPage = (props: Props) => {
     {
       no: "03",
       id: "20110",
-      preview: "https://via.placeholder.com/150", // Placeholder image
+      preview: "https://assets-mr-mag-com.s3.amazonaws.com/2018/11/Jordan-Brand-Logo-1.jpg", // Placeholder image
       created: "2024-08-03",
       lastUpdated: "2024-08-08",
       duration: "5 days",
@@ -125,10 +125,10 @@ const DeviceAdsManagementPage = (props: Props) => {
                   <td className="items-center  flex justify-center py-3">
                     <Image
                       src={ad.preview}
-                      width={10}
-                      height={10}
+                      width={1000}
+                      height={1000}
                       alt=""
-                      className="w-32 h-20"
+                      className="w-32 h-20 rounded-small"
                     />
                     {/* <div className=" w-32 h-20 bg-red-600"></div> */}
                   </td>
