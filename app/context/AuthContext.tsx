@@ -14,7 +14,7 @@ interface AuthContextType {
   isAuthenticated: boolean;
   isLoading: boolean;
   logoutUser: () => void;
-  loginUser: (email: string, password: string) => Promise<void>;
+  loginUser: (email: string, password: string) => Promise<boolean>;
   signupUser: (
     email: string,
     password: string,
@@ -45,38 +45,31 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   }, []);
 
-  const loginUser = async (email: string, password: string) => {
+  const loginUser = async (
+    email: string,
+    password: string
+  ): Promise<boolean> => {
     try {
       setIsLoading(true);
-      //   await login(email, password);
-
       await new Promise((resolve) => setTimeout(resolve, 3000)); // 3-second delay
-      setIsAuthenticated(true);
-      localStorage.setItem("isAuthenticated", JSON.stringify(true)); // Save auth state
-      setIsLoading(false);
+
+      if (email === "adaura@gmail.com" && password === "adaura") {
+        setIsAuthenticated(true);
+        localStorage.setItem("isAuthenticated", JSON.stringify(true)); // Save auth state
+        setIsLoading(false);
+        return true;
+      } else {
+        setIsAuthenticated(false);
+        setIsLoading(false);
+        return false;
+      }
     } catch (error) {
       console.error("Login failed", error);
       setIsLoading(false);
+      return false;
     }
   };
-
-  const signupUser = async (
-    email: string,
-    password: string,
-    companyID: string
-  ) => {
-    try {
-      setIsLoading(true);
-      //   await signupUser(email, password, companyID);
-
-      await new Promise((resolve) => setTimeout(resolve, 3000)); // 3-second delay
-      setIsLoading(false);
-    } catch (error) {
-      console.error("Signup failed", error);
-      setIsLoading(false);
-    }
-  };
-
+  
   const toggleAuth = () => {
     setIsLogin((prevIsLogin) => !prevIsLogin);
   };
@@ -89,6 +82,26 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     // Remove from localStorage
     localStorage.removeItem("isAuthenticated");
     localStorage.removeItem("user");
+  };
+  const signupUser = async (
+    email: string,
+    password: string,
+    companyID: string
+  ): Promise<void> => {
+    try {
+      setIsLoading(true);
+      // Here, you can integrate your signup API call
+      // For example, using an API client method like signup(email, password, companyID):
+    //   await signup(email, password, companyID);
+
+      // Simulate signup success
+      setIsAuthenticated(true);
+      localStorage.setItem("isAuthenticated", JSON.stringify(true)); // Save auth state
+      setIsLoading(false);
+    } catch (error) {
+      console.error("Signup failed", error);
+      setIsLoading(false);
+    }
   };
 
   return (

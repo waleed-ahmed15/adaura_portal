@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import React from "react";
 import { useState, useEffect } from "react";
 import {
@@ -11,6 +11,8 @@ import Image from "next/image";
 import { useAuth } from "../context/AuthContext";
 type Props = {};
 import { useRouter, useSearchParams } from "next/navigation";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const LoginForm = (props: Props) => {
   const [email, setEmail] = useState("");
@@ -25,14 +27,18 @@ const LoginForm = (props: Props) => {
   useEffect(() => {
     if (isAuthenticated) {
       router.replace(redirect);
+      //   toast.success("Login Sucessfull");
     }
   }, [isAuthenticated]);
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    await loginUser(email, password);
-    if (isAuthenticated) {
-      console.log("herer");
-      router.push(redirect);
+    const success = await loginUser(email, password);
+    if (success) {
+      toast.success("Login Sucessfull");
+      console.log("Login successful");
+    } else {
+      toast.error("Invalid Credentials");
+      console.log("Login failed");
     }
 
     // Handle login logic here

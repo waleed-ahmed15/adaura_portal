@@ -113,7 +113,7 @@ const SignupForm = (props: Props) => {
                 type="submit"
                 className="w-full py-4 px-4 border border-transparent rounded-xl shadow-sm text-b-medium font-semibold text-white bg-primary hover:bg-primary focus:outline-none  focus:ring-offset-2"
               >
-                Sign In
+                Sign Up
               </button>
             )}
           </form>

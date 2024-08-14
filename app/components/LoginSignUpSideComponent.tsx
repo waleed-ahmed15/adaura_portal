@@ -24,7 +24,7 @@ const LoginSignUpSideComponent = (props: Props) => {
         <p className="text-white font-semibold text-h-small">
           Empowering Your Digital Evolution
         </p>
-        <p className="text-gray-[#F8FAFC] text-b-small">
+        <p className="text-gray-300 text-b-small">
           Everything you need in an easily customizable dashboard.
         </p>
       </div>

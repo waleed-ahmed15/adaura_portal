@@ -39,8 +39,6 @@ export default function Home() {
     <ProtectedRoute>
       <div className="flex flex-col w-full h-full bg-white px-10 py-10">
         <Breadcrumb items={breadcrumbItems} />
-        <div onClick={logoutUser}>logout</div>
-
         <p className="text-[#1A1A1A] my-3 text-h-large font-bold">Devices</p>
 
         <div className="flex items-center justify-end gap-5 mt-5">
@@ -125,7 +123,7 @@ export default function Home() {
                           alt="History"
                           className="w-4 h-4"
                         />
-                        History
+                        Ads History
                       </span>
                     </Link>
                   </td>

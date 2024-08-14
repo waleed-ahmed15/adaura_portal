@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import ImageGallery from "./ImagesGallery";
 import Image from "next/image";
 import { ImagePreview } from "@/declarations";
+import { Tooltip } from "@nextui-org/tooltip";
 
 interface UploadAdDialogProps {
   isOpen: boolean;
@@ -119,78 +120,88 @@ const UploadAdDialog: React.FC<UploadAdDialogProps> = ({ isOpen, onClose }) => {
               <ImageGallery onImagesChange={handleImagesChange} />
             </div>
           </div>
-
-          <div className="mb-6 flex gap-4">
-            <span className="text-b-large font-medium text-black">Schedule</span>
-            <label className="inline-flex items-center mb-5 cursor-pointer">
-              <input
-                type="checkbox"
-                className="sr-only peer"
-                checked={isScheduled}
-                onChange={() => setIsScheduled(!isScheduled)}
-              />
-              <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:w-5 after:h-5 after:transition-all peer-checked:bg-primary"></div>
-            </label>
-          </div>
-
-          <div className="mb-6 flex md:flex-row flex-col items-end space-x-4">
-            <div className="flex-col w-full">
-              <label className="block text-black font-semibold mb-2">
-                Date *
-              </label>
-              <div className="flex w-full flex-col md:flex-row gap-3 md:items-center md:gap-10">
-                <input
-                  type="date"
-                  required
-                  className="w-full px-4 py-2 border rounded-md focus:outline-none"
-                  value={selectedDate}
-                  onChange={(e) => setSelectedDate(e.target.value)}
-                />
-                <p className="block text-gray-700 font-medium mb-2">From</p>
-                <input
-                  type="time"
-                  className="w-full px-4 py-2 border rounded-md focus:outline-none"
-                  value={startTime}
-                  onChange={(e) => setStartTime(e.target.value)}
-                />
-                <label className="block text-gray-700 font-medium mb-2">
-                  To
-                </label>
-                <input
-                  type="time"
-                  className="w-full px-4 py-2 border rounded-md focus:outline-none"
-                  value={endTime}
-                  onChange={(e) => setEndTime(e.target.value)}
-                />
-              </div>
-            </div>
-          </div>
-
-          <div className="mb-6">
-            <label className="block text-black font-semibold mb-4">
-              Frequency *
-            </label>
-            <div className="flex flex-wrap gap-2 md:w-7/12">
-              {[
-                "Monday",
-                "Tuesday",
-                "Wednesday",
-                "Thursday",
-                "Friday",
-                "Saturday",
-                "Sunday",
-              ].map((day) => (
-                <label key={day} className="flex items-center space-x-2">
+          <Tooltip content="Comming Soon" className=" text-white p-3 rounded-lg bg-gray-500">
+            <div className="   opacity-50 bg-gray-200 py-3 px-2 rounded-lg mb-2">
+              <div className="mb-6 flex gap-4">
+                <span className="text-b-large font-medium text-black">
+                  Schedule
+                </span>
+                <label className="inline-flex items-center mb-5 cursor-pointer">
                   <input
                     type="checkbox"
-                    checked={selectedDays.includes(day)}
-                    onChange={() => handleDaySelection(day)}
+                    disabled
+                    className="sr-only peer"
+                    checked={isScheduled}
+                    onChange={() => setIsScheduled(!isScheduled)}
                   />
-                  <span>{day}</span>
+                  <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:w-5 after:h-5 after:transition-all peer-checked:bg-primary"></div>
                 </label>
-              ))}
+              </div>
+
+              <div className=" mb-6 flex md:flex-row flex-col items-end space-x-4">
+                <div className="flex-col w-full">
+                  <label className="block text-black font-semibold mb-2">
+                    Date *
+                  </label>
+                  <div className="flex w-full flex-col md:flex-row gap-3 md:items-center md:gap-10">
+                    <input
+                      type="date"
+                      //   required
+                      disabled
+                      className="w-full px-4 py-2 border rounded-md focus:outline-none"
+                      value={selectedDate}
+                      onChange={(e) => setSelectedDate(e.target.value)}
+                    />
+                    <p className="block text-gray-700 font-medium mb-2">From</p>
+                    <input
+                      type="time"
+                      disabled
+                      className="w-full px-4 py-2 border rounded-md focus:outline-none"
+                      value={startTime}
+                      onChange={(e) => setStartTime(e.target.value)}
+                    />
+                    <label className="block text-gray-700 font-medium mb-2">
+                      To
+                    </label>
+                    <input
+                      type="time"
+                      disabled
+                      className="w-full px-4 py-2 border rounded-md focus:outline-none"
+                      value={endTime}
+                      onChange={(e) => setEndTime(e.target.value)}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="mb-6">
+                <label className="block text-black font-semibold mb-4">
+                  Frequency *
+                </label>
+                <div className="flex flex-wrap gap-2 md:w-7/12">
+                  {[
+                    "Monday",
+                    "Tuesday",
+                    "Wednesday",
+                    "Thursday",
+                    "Friday",
+                    "Saturday",
+                    "Sunday",
+                  ].map((day) => (
+                    <label key={day} className="flex items-center space-x-2">
+                      <input
+                        type="checkbox"
+                        disabled
+                        checked={selectedDays.includes(day)}
+                        onChange={() => handleDaySelection(day)}
+                      />
+                      <span>{day}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
             </div>
-          </div>
+          </Tooltip>
 
           <div className="flex justify-end space-x-4">
             <button
