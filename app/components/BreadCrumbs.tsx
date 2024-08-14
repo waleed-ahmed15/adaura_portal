@@ -1,10 +1,9 @@
 import Link from "next/link";
 
 interface BreadcrumbItem {
-  label: string;
+  label: string | string[];
   href?: string;
 }
-
 interface BreadcrumbProps {
   items: BreadcrumbItem[];
 }
@@ -15,6 +14,7 @@ export default function Breadcrumb({ items }: BreadcrumbProps) {
       <hr className="h-px my-4 border-0 dark:bg-[#C8C8C8]" />
       {items.map((item, index) => {
         const isLastItem = index === items.length - 1;
+        const label = Array.isArray(item.label) ? item.label.join(' ') : item.label;
 
         return (
           <span
@@ -25,10 +25,10 @@ export default function Breadcrumb({ items }: BreadcrumbProps) {
           >
             {item.href && !isLastItem ? (
               <Link href={item.href}>
-                {item.label}
+                {label}
               </Link>
             ) : (
-              <span>{item.label}</span>
+              <span>{label}</span>
             )}
             {!isLastItem && " > "}
           </span>
