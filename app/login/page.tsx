@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { Suspense } from "react";
 import { useState } from "react";
 import {
   EyeIcon,
@@ -21,7 +21,9 @@ const LoginPage = (props: Props) => {
   return (
     <div className="flex h-full">
       <LoginSignUpSideComponent />
-      {isLogin ? <LoginForm /> : <SignupForm />}
+      <Suspense fallback={<div>Loading...</div>}>
+        {isLogin ? <LoginForm /> : <SignupForm />}
+      </Suspense>
     </div>
   );
 };
