@@ -4,22 +4,28 @@ import ProtectedRoute from "@/app/components/ProtectedRoutes";
 import UploadAdDialog from "@/app/components/UploadAdDialog";
 import Image from "next/image";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 
 type Props = {};
 
 const DeviceAdsManagementPage = (props: Props) => {
-  const { deviceID } = useParams();
+  const router = useRouter();
+
   const breadcrumbItems = [
     { label: "Home", href: "/" },
     { label: "Ads Management", href: "/" },
   ];
+
+  const goToAdsManagementPage = (id: string) => {
+    router.push(`/ads/${id}`);
+  };
   const adsHistory = [
     {
       no: "01",
       id: "20109",
-      preview: "https://www.simplilearn.com/ice9/free_resources_article_thumb/Coca_Cola_Marketing_Strategy_2022.jpg", // Placeholder image
+      preview:
+        "https://www.simplilearn.com/ice9/free_resources_article_thumb/Coca_Cola_Marketing_Strategy_2022.jpg", // Placeholder image
       created: "2024-08-01",
       lastUpdated: "2024-08-07",
       duration: "7 days",
@@ -29,7 +35,8 @@ const DeviceAdsManagementPage = (props: Props) => {
     {
       no: "02",
       id: "20110",
-      preview: "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/f4faf829500323.55f69c7711cc3.jpg", // Placeholder image
+      preview:
+        "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/f4faf829500323.55f69c7711cc3.jpg", // Placeholder image
       created: "2024-08-03",
       lastUpdated: "2024-08-08",
       duration: "5 days",
@@ -39,7 +46,8 @@ const DeviceAdsManagementPage = (props: Props) => {
     {
       no: "03",
       id: "20110",
-      preview: "https://assets-mr-mag-com.s3.amazonaws.com/2018/11/Jordan-Brand-Logo-1.jpg", // Placeholder image
+      preview:
+        "https://assets-mr-mag-com.s3.amazonaws.com/2018/11/Jordan-Brand-Logo-1.jpg", // Placeholder image
       created: "2024-08-03",
       lastUpdated: "2024-08-08",
       duration: "5 days",
@@ -101,27 +109,26 @@ const DeviceAdsManagementPage = (props: Props) => {
             </thead>
             <tbody>
               {adsHistory.map((device, index) => (
-
                 <tr
                   key={index}
-                  className={` text-b-medium font-bold ${
+                  onClick={() => goToAdsManagementPage(device.id)}
+                  className={` cursor-pointer text-b-medium font-bold ${
                     index % 2 === 0 ? "bg-primary text-white " : "bg-white"
                   } border-t`}
                 >
-                  <td className=" text-center ">
-                    {device.no} </td>
+                  <td className=" text-center ">{device.no} </td>
                   <td className="px-6 py-3 text-center ">{device.id}</td>
                   <td className="px-6 py-3 text-center ">{device.created}</td>
-                  <td className="px-6 py-3 text-center ">{device.lastUpdated}</td>
+                  <td className="px-6 py-3 text-center ">
+                    {device.lastUpdated}
+                  </td>
                   <td className="px-6 py-3 text-center ">{device.duration}</td>
                   <td className="px-6 py-3 text-center   cursor-pointer">
                     <span className="flex items-center gap-2 justify-center underline">
                       {device.currentStatus}
                     </span>
                   </td>
-                 
                 </tr>
-              
               ))}
             </tbody>
           </table>

@@ -11,6 +11,7 @@ type Props = {};
 
 const DeviceAdsManagementPage = (props: Props) => {
   const { deviceID } = useParams();
+  
   const breadcrumbItems = [
     { label: "Home", href: "/" },
     { label: "Companies", href: "/" },
