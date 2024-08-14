@@ -26,7 +26,7 @@ const ClientDeviceRegistrationForm = () => {
     setIsLoading(true);
 
     const url = new URL(
-      "http://192.168.18.19:3000/api/display-device-client-registration"
+      `${window.location.origin}/api/display-device-client-registration`
     );
     url.searchParams.append("deviceID", deviceID);
     url.searchParams.append("companyID", companyID);
