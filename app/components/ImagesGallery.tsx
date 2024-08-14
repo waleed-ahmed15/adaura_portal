@@ -34,31 +34,29 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ onImagesChange }) => {
   }, [images, onImagesChange]);
 
   return (
-    <div className="flex space-x-4  gap-5 flex-wrap">
+    <div className="flex overflow-x-auto space-x-4 gap-5 flex-nowrap py-2">
       {images.map((image) => (
-        <div key={image.id} className="relative">
+        <div key={image.id} className="relative flex-shrink-0">
           <Image
             src={image.src}
             alt={`Preview ${image.id + 1}`}
             width={150}
             height={100}
-            className="object-cover  h-24 rounded-lg"
+            className="object-cover h-24 rounded-lg"
           />
           <button
             onClick={() => handleRemoveImage(image.id)}
-            className="absolute -top-1 -right-1  text-white rounded-full "
+            className="absolute -top-1 -right-1 text-white rounded-full"
           >
             <Image src="/close_icon.svg" alt="" width={20} height={20} />
           </button>
         </div>
       ))}
 
-      {
-        <label className="flex items-center justify-center w-[150px] rounded-lg h-24 bg-gray-200 cursor-pointer">
-          <input type="file" className="hidden" onChange={handleAddImage} />
-          <span className="text-3xl">+</span>
-        </label>
-      }
+      <label className="flex items-center justify-center w-[150px] rounded-lg h-24 bg-gray-200 cursor-pointer flex-shrink-0">
+        <input type="file" className="hidden" onChange={handleAddImage} />
+        <span className="text-3xl">+</span>
+      </label>
     </div>
   );
 };

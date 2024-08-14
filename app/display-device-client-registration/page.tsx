@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Image from "next/image";
 import { EyeIcon, EyeOffIcon } from "@heroicons/react/solid";
@@ -9,7 +9,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 type Props = {};
 
-const CLientDeviceRegistrationPage = (props: Props) => {
+const ClientDeviceRegistrationForm = () => {
   const searchParams = useSearchParams();
 
   const deviceID = searchParams.get("deviceID") ?? "1234";
@@ -25,7 +25,6 @@ const CLientDeviceRegistrationPage = (props: Props) => {
     e.preventDefault();
     setIsLoading(true);
 
-    // Construct the full URL with the provided values
     const url = new URL(
       "http://192.168.18.19:3000/api/display-device-client-registration"
     );
@@ -34,7 +33,7 @@ const CLientDeviceRegistrationPage = (props: Props) => {
     url.searchParams.append("deviceName", deviceName);
     url.searchParams.append("address", deviceAddress);
 
-    // try {
+    try {
       const response = await fetch(url.toString(), {
         method: "PUT",
         headers: {
@@ -43,22 +42,18 @@ const CLientDeviceRegistrationPage = (props: Props) => {
       });
 
       if (response.ok) {
-        // Show success toast notification
         toast.success("Device registered successfully!");
         console.log("Device registered successfully!");
       } else {
-        // Show error toast notification
         toast.error("Device registration failed!");
         console.log("Device registration failed!");
       }
-    // } catch (error) {
-        // console.log(error)
-      // Show error toast notification
-    //   toast.error("An error occurred: ");
+    } catch (error) {
+      toast.error("An error occurred");
       console.log("An error Occured");
-    // } finally {
+    } finally {
       setIsLoading(false);
-    // }
+    }
   };
 
   return (
@@ -67,7 +62,7 @@ const CLientDeviceRegistrationPage = (props: Props) => {
 
       <div className="flex-1">
         <div className="flex min-h-screen items-center justify-center bg-white">
-          <div className="w-full max-w-md p-8 space-y-6 ">
+          <div className="w-full max-w-md p-8 space-y-6">
             <div className="flex flex-col items-start justify-self-center gap-2">
               <h2 className="text-center text-h-small font-bold text-gray-900">
                 Register
@@ -87,7 +82,7 @@ const CLientDeviceRegistrationPage = (props: Props) => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Email"
-                  className="block w-full pl-10 pr-4 py-4 placeholder:text-b-large   border border-[#E2E8F0] rounded-xl shadow-sm focus:outline-none  text-b-medium font-semibold text-black"
+                  className="block w-full pl-10 pr-4 py-4 placeholder:text-b-large border border-[#E2E8F0] rounded-xl shadow-sm focus:outline-none text-b-medium font-semibold text-black"
                   required
                 />
               </div>
@@ -101,7 +96,7 @@ const CLientDeviceRegistrationPage = (props: Props) => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Password"
-                  className="block w-full pl-10 pr-10 py-4 border-2 placeholder:text-b-large border-[#E2E8F0] text-b-large font-semibold text-black rounded-xl shadow-sm focus:outline-none "
+                  className="block w-full pl-10 pr-10 py-4 border-2 placeholder:text-b-large border-[#E2E8F0] text-b-large font-semibold text-black rounded-xl shadow-sm focus:outline-none"
                   required
                 />
                 {showPassword ? (
@@ -125,7 +120,7 @@ const CLientDeviceRegistrationPage = (props: Props) => {
                   value={deviceName}
                   onChange={(e) => setDeviceName(e.target.value)}
                   placeholder="Device Name"
-                  className="block w-full pl-10 pr-4 py-4 border placeholder:text-b-large border-[#E2E8F0] rounded-xl shadow-sm focus:outline-none  text-b-large font-semibold text-black"
+                  className="block w-full pl-10 pr-4 py-4 border placeholder:text-b-large border-[#E2E8F0] rounded-xl shadow-sm focus:outline-none text-b-large font-semibold text-black"
                   required
                 />
               </div>
@@ -138,7 +133,7 @@ const CLientDeviceRegistrationPage = (props: Props) => {
                   value={deviceAddress}
                   onChange={(e) => setDeviceAddress(e.target.value)}
                   placeholder="Device Address"
-                  className="block w-full pl-10 pr-4 py-4 border placeholder:text-b-large border-[#E2E8F0] rounded-xl shadow-sm focus:outline-none  text-b-large font-semibold text-black"
+                  className="block w-full pl-10 pr-4 py-4 border placeholder:text-b-large border-[#E2E8F0] rounded-xl shadow-sm focus:outline-none text-b-large font-semibold text-black"
                   required
                 />
               </div>
@@ -164,7 +159,7 @@ const CLientDeviceRegistrationPage = (props: Props) => {
               ) : (
                 <button
                   type="submit"
-                  className="w-full py-4 px-4 border border-gray-400 rounded-xl shadow-sm text-b-medium  text-primary font-semibold bg-white hover:bg-gray-50 focus:outline-none"
+                  className="w-full py-4 px-4 border border-gray-400 rounded-xl shadow-sm text-b-medium text-primary font-semibold bg-white hover:bg-gray-50 focus:outline-none"
                 >
                   Register
                 </button>
@@ -176,5 +171,11 @@ const CLientDeviceRegistrationPage = (props: Props) => {
     </div>
   );
 };
+
+const CLientDeviceRegistrationPage = (props: Props) => (
+  <Suspense fallback={<div>Loading...</div>}>
+    <ClientDeviceRegistrationForm />
+  </Suspense>
+);
 
 export default CLientDeviceRegistrationPage;
