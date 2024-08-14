@@ -88,7 +88,7 @@ const DeviceAdsManagementPage = (props: Props) => {
                   <td className="px-6 py-3 text-center items-center flex justify-center   cursor-pointer">
                     <button className=" bg-white  text-black flex gap-4 py-2 px-7 border-2 border-[#64748B] rounded-lg shadow-sm text-b-medium font-semibold ">
                       <Image
-                        src="/image_icon.png"
+                        src="/settings_icon.svg"
                         alt=""
                         width={20}
                         height={20}
