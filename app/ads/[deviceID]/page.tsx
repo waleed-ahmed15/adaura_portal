@@ -15,7 +15,7 @@ const DeviceAdsManagementPage = (props: Props) => {
     { label: "Home", href: "/" },
     { label: "Devices", href: "/" },
 
-    { label: "Ads Management", href: "#" },
+    { label: "Ads Management", href: "/ads" },
     { label: "History", href: "#" },
   ];
   const adsHistory = [
