@@ -120,8 +120,8 @@ const UploadAdDialog: React.FC<UploadAdDialogProps> = ({ isOpen, onClose }) => {
               <ImageGallery onImagesChange={handleImagesChange} />
             </div>
           </div>
-          <Tooltip content="Comming Soon" className=" text-white p-3 rounded-lg bg-gray-500">
-            <div className="   opacity-50 bg-gray-200 py-3 px-2 rounded-lg mb-2">
+          <Tooltip content="Schedule Feature Comming Soon!" className=" text-white p-3 rounded-lg bg-gray-500">
+            <div className="   opacity-50 bg-gray-200 py-3 px-2 rounded-lg mb-5">
               <div className="mb-6 flex gap-4">
                 <span className="text-b-large font-medium text-black">
                   Schedule

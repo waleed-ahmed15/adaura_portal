@@ -16,9 +16,10 @@ const DeviceAdsManagementPage = (props: Props) => {
   const { deviceID } = useParams();
   const breadcrumbItems: BreadcrumbItem[] = [
     { label: "Home", href: "/" },
-    { label: "Devices", href: "/" },
+
     { label: "Ads Management", href: "/ads" },
-    { label: "History", href: "#" },
+    { label: "Devices", href: "/" },
+    { label: deviceID, href: "/" },
   ];
 
   const adsHistory = [
@@ -92,7 +93,7 @@ const DeviceAdsManagementPage = (props: Props) => {
         {/* <p>Device ID: {deviceID}</p> */}
         <UploadAdDialog isOpen={isDialogOpen} onClose={closeDialog} />
         <div className="flex flex-row justify-between items-start">
-          <p className="text-[#1A1A1A] my-3 text-h-large font-bold">History</p>
+          <p className="text-[#1A1A1A] my-3 text-h-large font-bold">Ads Management</p>
           <button
             className="text-center bg-primary px-10 py-3 flex items-center rounded-xl text-white"
             onClick={() => {

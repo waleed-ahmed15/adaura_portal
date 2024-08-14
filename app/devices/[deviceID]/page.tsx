@@ -23,7 +23,7 @@ const DeviceAdsManagementPage = (props: Props) => {
       no: "01",
       id: "20109",
       preview: "https://www.simplilearn.com/ice9/free_resources_article_thumb/Coca_Cola_Marketing_Strategy_2022.jpg", // Placeholder image
-      created: "2024-08-01",
+      assets: "4",
       lastUpdated: "2024-08-07",
       duration: "7 days",
       currentStatus: "Active",
@@ -33,7 +33,7 @@ const DeviceAdsManagementPage = (props: Props) => {
       no: "02",
       id: "20110",
       preview: "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/f4faf829500323.55f69c7711cc3.jpg", // Placeholder image
-      created: "2024-08-03",
+      assets: "7",
       lastUpdated: "2024-08-08",
       duration: "5 days",
       currentStatus: "Inactive",
@@ -43,7 +43,7 @@ const DeviceAdsManagementPage = (props: Props) => {
       no: "03",
       id: "20110",
       preview: "https://assets-mr-mag-com.s3.amazonaws.com/2018/11/Jordan-Brand-Logo-1.jpg", // Placeholder image
-      created: "2024-08-03",
+      assets: "5",
       lastUpdated: "2024-08-08",
       duration: "5 days",
       currentStatus: "Inactive",
@@ -95,11 +95,10 @@ const DeviceAdsManagementPage = (props: Props) => {
             <thead className="">
               <tr className="bg-white text-b-large font-bold ">
                 <th className="px-6 py-6">No.</th>
-                <th className="px-6 py-3">ID</th>
-                <th className="px-6 py-3">Created</th>
-                <th className="px-6 py-3">Last Updated</th>
+                <th className="px-6 py-3">Assets</th>
+                <th className="px-6 py-3">Last Live</th>
                 <th className="px-6 py-3">Session Duration</th>
-                <th className="px-6 py-3">CurrentStatus</th>
+       
               </tr>
             </thead>
             <tbody>
@@ -112,53 +111,11 @@ const DeviceAdsManagementPage = (props: Props) => {
                 >
                   <td className=" text-center ">{device.no}</td>
 
-                  <td className="px-6 py-3 text-center ">{device.id}</td>
-                  <td className="px-6 py-3 text-center ">{device.created}</td>
+                
+                  <td className="px-6 py-3 text-center ">{device.assets}</td>
                   <td className="px-6 py-3 text-center ">{device.lastUpdated}</td>
                   <td className="px-6 py-3 text-center ">{device.duration}</td>
 
-                  {/* </td>
-                  <td
-                    className="px-6 py-3 text-center justify-center flex items-center gap-2"
-                    title={device.runningAds} // Tooltip showing the full text
-                  >
-                    <span
-                      className="w-2 h-2 rounded-full"
-                      style={{ backgroundColor: device.adsStatusColor }}
-                    ></span>
-                    <span className=" truncate max-w-[100px]">
-                      {device.runningAds}
-                    </span>
-                  </td>
-                  <td
-                    className="px-6 py-3 text-center  cursor-pointer"
-                    title={device.deviceStatus} // Tooltip showing the full text
-                  >
-                    <div className="flex items-center justify-center gap-2">
-                      <span
-                        className="w-2 h-2 rounded-full"
-                        style={{ backgroundColor: device.deviceStatusColor }}
-                      ></span>
-                      <span className="flex items-center gap-2 justify-center truncate max-w-[100px]">
-                        {device.deviceStatus}
-                      </span>
-                    </div>
-                  </td>
-                  <td
-                    className="px-6 py-3 text-center  border-2 "
-                    title={device.organization} // Tooltip showing the full text
-                  >
-                    <div className="flex items-center justify-center">
-                      <p className="truncate max-w-[200px] text-center">
-                        {device.organization}
-                      </p>
-                    </div>
-                  </td> */}
-                  <td className="px-6 py-3 text-center   cursor-pointer">
-                    <span className="flex items-center gap-2 justify-center underline">
-                      {device.currentStatus}
-                    </span>
-                  </td>
                 </tr>
               ))}
             </tbody>
