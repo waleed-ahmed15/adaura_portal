@@ -1,65 +1,100 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ImageGallery from "./ImagesGallery";
 import Image from "next/image";
 import { ImagePreview } from "@/declarations";
 import { Tooltip } from "@nextui-org/tooltip";
+import { fetchDevices, uploadAd } from "../apiCilent/apiClient";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface UploadAdDialogProps {
   isOpen: boolean;
-  onClose: () => void;
+  onClose: (success: any) => void;
 }
 
 const UploadAdDialog: React.FC<UploadAdDialogProps> = ({ isOpen, onClose }) => {
   const [selectedImages, setSelectedImages] = useState<ImagePreview[]>([]);
-  const [selectedDevice, setSelectedDevice] = useState<string>("");
-  const [isScheduled, setIsScheduled] = useState<boolean>(false);
-  const [selectedDate, setSelectedDate] = useState<string>("");
-  const [startTime, setStartTime] = useState<string>("");
-  const [endTime, setEndTime] = useState<string>("");
   const [selectedDays, setSelectedDays] = useState<string[]>([]);
+  const [isFetching, setIsFetching] = useState<boolean>(false);
+  const [adsInfo, setAdsInfo] = useState<any>({
+    deviceId: "",
+    title: "",
+    startDate: "",
+    endDate: "",
+    displayFrequency: [] 
+  });
+  const [devices, setDevices] = useState([]);
+
+  const getDevices = async () => {
+    try {
+      const fetchedDevices = await fetchDevices();
+      setDevices(fetchedDevices.data.results);
+    } catch (error) {
+      console.error("Error fetching devices:", error);
+    }
+  };
+
+  useEffect(() => {
+
+    getDevices();
+  }, []);
 
   const handleDaySelection = (day: string) => {
-    setSelectedDays((prev) =>
-      prev.includes(day) ? prev.filter((d) => d !== day) : [...prev, day]
-    );
+    setAdsInfo((prevAdsInfo: any) => ({
+      ...prevAdsInfo,
+      displayFrequency: prevAdsInfo.displayFrequency.includes(day)
+        ? prevAdsInfo.displayFrequency.filter((d: string) => d !== day)
+        : [...prevAdsInfo.displayFrequency, day]
+    }));
   };
-  const uploadAd = async () => {
-    const formData = new FormData();
 
-    // Append the images
-    selectedImages.forEach((image) => {
-      formData.append("images", image.file); // "images" should match the backend API's expected key
+  const clearModalData = () => {
+    setSelectedImages([]);
+    setAdsInfo({
+      deviceId: "",
+      title: "",
+      startDate: "",
+      endDate: "",
+      displayFrequency: [],
     });
 
-    // Append other form fields
-    formData.append("device", selectedDevice);
-    formData.append("isScheduled", isScheduled ? "true" : "false");
-    formData.append("date", selectedDate);
-    formData.append("startTime", startTime);
-    formData.append("endTime", endTime);
-    formData.append("days", JSON.stringify(selectedDays)); // Convert array to JSON string
+  }
+  const onClickDeployAd = async () => {
+    
+    const formData = new FormData();
 
-    console.log(formData);
-    // try {
-    //   const response = await fetch("/api/upload", {
-    //     method: "POST",
-    //     body: formData,
-    //   });
+    // Append images as "files" array for backend processing
+    selectedImages.forEach((image) => {
+      formData.append("files", image.file); // Ensures "files" matches backend field
+    });
 
-    //   if (response.ok) {
-    //     console.log("Ad uploaded successfully!");
-    //   } else {
-    //     console.error("Failed to upload ad");
-    //   }
-    // } catch (error) {
-    //   console.error("An error occurred while uploading the ad", error);
-    // }
+    // Add other required fields from adsInfo
+    formData.append("deviceId", adsInfo.deviceId);
+    formData.append("title", adsInfo.title);
+    formData.append("startDate", adsInfo.startDate);
+    formData.append("endDate", adsInfo.endDate);
+    formData.append("displayFrequency", JSON.stringify(adsInfo.displayFrequency));
+
+    try {
+      setIsFetching(true)
+      const response = await uploadAd(formData);
+      toast.success("Ad Uploaded Sucessfully");
+      clearModalData()
+      onClose(true)
+
+    } catch (error) {
+      toast.error("Ad Upload Error");
+
+      console.error("An error occurred while uploading the ad", error);
+    } finally {
+      setIsFetching(false)
+    }
   };
 
   const handleImagesChange = (images: ImagePreview[]) => {
     setSelectedImages(images);
-    console.log("Updated images:", images); // This logs the updated list of images
   };
+
   if (!isOpen) return null;
 
   return (
@@ -67,8 +102,8 @@ const UploadAdDialog: React.FC<UploadAdDialogProps> = ({ isOpen, onClose }) => {
       <div className="bg-white rounded-lg p-8 w-[780px]">
         <form
           onSubmit={(e) => {
-            e.preventDefault(); // Prevents the default form submission behavior
-            uploadAd(); // Call the upload function
+            e.preventDefault();
+            onClickDeployAd();
           }}
         >
           <div className="flex justify-between items-center mb-6">
@@ -87,121 +122,83 @@ const UploadAdDialog: React.FC<UploadAdDialogProps> = ({ isOpen, onClose }) => {
             </label>
             <select
               className="w-full px-4 py-2 border rounded-md focus:outline-none"
-              value={selectedDevice}
+              value={adsInfo.deviceId}
               required
-              onChange={(e) => setSelectedDevice(e.target.value)}
+              onChange={(e) =>
+                setAdsInfo({ ...adsInfo, deviceId: e.target.value })
+              }
             >
               <option value="" disabled>
                 Select-Device
               </option>
-              <option>Device - 1</option>
-              <option>Device - 2</option>
-              <option>Device - 3</option>
-              <option>Device - 4</option>
-              <option>Device - 5</option>
+              {devices.map((device) => (
+                <option key={device.id} value={device.id}>
+                  {device.title} | ID: {device.id}
+                </option>
+              ))}
             </select>
           </div>
 
           <div className="mb-6 border-2 rounded-lg p-4">
-            <div className="flex flex-row items-center pb-2 gap-3">
-              <label className="block text-[#848484] font-medium ">
-                PREVIEW
-              </label>
-              <span
-                className={`text-b-small text-red-600  ${
-                  selectedImages.length == 0 ? "block" : "hidden"
-                }`}
-              >
-                (Please Add Atleast 1 Image)
-              </span>
-            </div>
-
+            <label className="block text-[#848484] font-medium mb-2">
+              Ad Title
+            </label>
+            <input
+              type="text"
+              required
+              placeholder="Ad Title"
+              value={adsInfo.title}
+              onChange={(e) =>
+                setAdsInfo({ ...adsInfo, title: e.target.value })
+              }
+              className="w-full px-4 py-2 border rounded-md focus:outline-none"
+            />
             <div className="flex space-x-4">
               <ImageGallery onImagesChange={handleImagesChange} />
             </div>
           </div>
-          <Tooltip content="Upgrade your plan" className=" text-white p-3 rounded-lg bg-gray-500">
-            <div className="   opacity-50 bg-gray-200 py-3 px-2 rounded-lg mb-5">
-              <div className="mb-6 flex gap-4">
-                <span className="text-b-large font-medium text-black">
-                  Schedule
-                </span>
-                <label className="inline-flex items-center mb-5 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    disabled
-                    className="sr-only peer"
-                    checked={isScheduled}
-                    onChange={() => setIsScheduled(!isScheduled)}
-                  />
-                  <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:w-5 after:h-5 after:transition-all peer-checked:bg-primary"></div>
-                </label>
-              </div>
 
-              <div className=" mb-6 flex md:flex-row flex-col items-end space-x-4">
-                <div className="flex-col w-full">
-                  <label className="block text-black font-semibold mb-2">
-                    Date *
+          <div className="mb-6">
+            <label className="block text-black font-semibold mb-2">
+              Schedule Date
+            </label>
+            <input
+              type="date"
+              value={adsInfo.startDate}
+              onChange={(e) =>
+                setAdsInfo({ ...adsInfo, startDate: e.target.value })
+              }
+              className="w-full px-4 py-2 border rounded-md focus:outline-none"
+            />
+            <input
+              type="date"
+              value={adsInfo.endDate}
+              onChange={(e) =>
+                setAdsInfo({ ...adsInfo, endDate: e.target.value })
+              }
+              className="w-full px-4 py-2 border rounded-md focus:outline-none"
+            />
+          </div>
+
+          <div className="mb-6">
+            <label className="block text-black font-semibold mb-4">
+              Frequency *
+            </label>
+            <div className="flex flex-wrap gap-2 md:w-7/12">
+              {["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"].map(
+                (day) => (
+                  <label key={day} className="flex items-center space-x-2">
+                    <input
+                      type="checkbox"
+                      checked={adsInfo.displayFrequency.includes(day)}
+                      onChange={() => handleDaySelection(day)}
+                    />
+                    <span>{day}</span>
                   </label>
-                  <div className="flex w-full flex-col md:flex-row gap-3 md:items-center md:gap-10">
-                    <input
-                      type="date"
-                      //   required
-                      disabled
-                      className="w-full px-4 py-2 border rounded-md focus:outline-none"
-                      value={selectedDate}
-                      onChange={(e) => setSelectedDate(e.target.value)}
-                    />
-                    <p className="block text-gray-700 font-medium mb-2">From</p>
-                    <input
-                      type="time"
-                      disabled
-                      className="w-full px-4 py-2 border rounded-md focus:outline-none"
-                      value={startTime}
-                      onChange={(e) => setStartTime(e.target.value)}
-                    />
-                    <label className="block text-gray-700 font-medium mb-2">
-                      To
-                    </label>
-                    <input
-                      type="time"
-                      disabled
-                      className="w-full px-4 py-2 border rounded-md focus:outline-none"
-                      value={endTime}
-                      onChange={(e) => setEndTime(e.target.value)}
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <div className="mb-6">
-                <label className="block text-black font-semibold mb-4">
-                  Frequency *
-                </label>
-                <div className="flex flex-wrap gap-2 md:w-7/12">
-                  {[
-                    "Monday",
-                    "Tuesday",
-                    "Wednesday",
-                    "Thursday",
-                    "Friday",
-                    "Saturday",
-                    "Sunday",
-                  ].map((day) => (
-                    <label key={day} className="flex items-center space-x-2">
-                      <input
-                        type="checkbox"
-                        disabled
-                        checked={selectedDays.includes(day)}
-                        onChange={() => handleDaySelection(day)}
-                      />
-                      <span>{day}</span>
-                    </label>
-                  ))}
-                </div>
-              </div>
+                )
+              )}
             </div>
-          </Tooltip>
+          </div>
 
           <div className="flex justify-end space-x-4">
             <button
@@ -211,13 +208,36 @@ const UploadAdDialog: React.FC<UploadAdDialogProps> = ({ isOpen, onClose }) => {
             >
               Back
             </button>
-            <button
-              type="submit"
-              disabled={selectedImages.length == 0}
-              className="px-4 py-2 bg-primary disabled:bg-gray-300 text-white rounded-md"
-            >
-              Deploy Ad
-            </button>
+
+            {isFetching ? (
+              <div className="items-center flex flex-row justify-center">
+                <svg
+                  aria-hidden="true"
+                  className="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+                  viewBox="0 0 100 101"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                    fill="currentColor"
+                  />
+                  <path
+                    d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                    fill="currentFill"
+                  />
+                </svg>
+              </div>
+            ) : (
+              <button
+                type="submit"
+                disabled={selectedImages.length === 0}
+                className="px-4 py-2 bg-primary disabled:bg-gray-300 text-white rounded-md"
+              >
+                Deploy Ad
+              </button>
+            )}
+
           </div>
         </form>
       </div>
