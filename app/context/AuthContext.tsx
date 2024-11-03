@@ -39,7 +39,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   // Check localStorage for existing auth state on mount
   useEffect(() => {
-    const storedAuthState = localStorage.getItem("isAuthenticated");
+    let storedAuthState = null;
+    if (typeof window !== "undefined") {
+    storedAuthState = localStorage.getItem("isAuthenticated");
+    }
     if (storedAuthState) {
       setIsAuthenticated(JSON.parse(storedAuthState));
     }

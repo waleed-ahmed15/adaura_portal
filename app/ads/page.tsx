@@ -61,7 +61,7 @@ const DeviceAdsManagementPage = (props: Props) => {
               </tr>
             </thead>
             <tbody>
-              {devices.map((device, index) => (
+              {devices.map((device:any, index) => (
                 <tr
                   key={device.id}
                   onClick={() => goToAdsManagementPage(device.id)}

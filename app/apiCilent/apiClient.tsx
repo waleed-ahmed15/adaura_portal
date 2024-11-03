@@ -1,3 +1,4 @@
+"use client";
 import axios from "axios";
 
 const apiClient = axios.create({
@@ -7,25 +8,39 @@ const apiClient = axios.create({
   },
 });
 
-const authApiClient = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL, // Set this in your .env file
-  headers: {
-    Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-    "Content-Type": "application/json",
-  },
+// Create an interceptor to add the Authorization header dynamically
+apiClient.interceptors.request.use((config) => {
+  if (typeof window !== "undefined") {
+    const token = localStorage.getItem("accessToken");
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+  }
+  return config;
 });
 
 const multipartAuthApiClient = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_BASE_URL, // Set this in your .env file
-
   headers: {
-    Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
     "Content-Type": "multipart/form-data",
   },
 });
 
+// Add Authorization header for multipart requests as well
+multipartAuthApiClient.interceptors.request.use((config) => {
+  if (typeof window !== "undefined") {
+    const token = localStorage.getItem("accessToken");
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+  }
+  return config;
+});
+
 const saveToken = (token: string) => {
-  localStorage.setItem("accessToken", token);
+  if (typeof window !== "undefined") {
+    localStorage.setItem("accessToken", token);
+  }
 };
 
 export const login = async (email: string, password: string) => {
@@ -43,11 +58,11 @@ export const signupUser = async (
 };
 
 export const fetchDevices = async () => {
-  return await authApiClient.get("/devices");
+  return await apiClient.get("/devices");
 };
 
 export const fetchAds = async () => {
-  return await authApiClient.get("/ads");
+  return await apiClient.get("/ads");
 };
 
 export const uploadAd = async (reqBody: any) => {

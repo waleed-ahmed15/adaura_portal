@@ -131,7 +131,7 @@ const UploadAdDialog: React.FC<UploadAdDialogProps> = ({ isOpen, onClose }) => {
               <option value="" disabled>
                 Select-Device
               </option>
-              {devices.map((device) => (
+              {devices.map((device:any) => (
                 <option key={device.id} value={device.id}>
                   {device.title} | ID: {device.id}
                 </option>

@@ -1,4 +1,6 @@
 "use client";
+//@ts-nocheck
+// @ts-ignore
 import Breadcrumb from "@/app/components/BreadCrumbs";
 import ProtectedRoute from "@/app/components/ProtectedRoutes";
 import UploadAdDialog from "@/app/components/UploadAdDialog";
@@ -82,7 +84,7 @@ const DeviceAdsManagementPage = (props: Props) => {
               </tr>
             </thead>
             <tbody>
-              {devices.map((ad, index) => (
+              {devices.map((ad: any, index) => (
                 <tr
                   key={index}
                   className={` text-b-medium font-bold ${
@@ -92,13 +94,14 @@ const DeviceAdsManagementPage = (props: Props) => {
                   <td className=" text-center ">{ad.id}</td>
 
                   <td className="items-center overflow-x-auto flex justify-center py-3">
-                    {ad.content.map((content) => (
+                    {ad.content.map((content:any) => (
                       <Image
                         src={content.url}
                         width={1000}
                         height={1000}
                         alt=""
                         className="w-32 h-20 rounded-small"
+                        key={content}
                       />
                     ))}
 
